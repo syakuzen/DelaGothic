@@ -1,4 +1,4 @@
-<img src = Documantation/img/img_01.jpg />
+<img src = Documentation/img/img_01.jpg />
 
 <h2>このフォントについて</h2>
 太いゴシック体をテーマに製作したフォントです。 文字の枠を横長に設定しておりどっしりとした安定感あります。<br />
