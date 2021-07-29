@@ -8,4 +8,4 @@
 #
 # Names should be added to this file as:
 # Name <email address>
-aratakana <typewindow@gmail.com>
+artakana <typewindow@gmail.com>

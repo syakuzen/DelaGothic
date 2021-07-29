@@ -3,8 +3,8 @@ import glob, shutil, subprocess
 import ufo2ft
 import ufoLib2
 from pathlib import Path
-from Foundation import NSURL, NSString, NSConnection
 import time, objc
+from Foundation import NSURL, NSString, NSConnection
 import os
 import inspect
 
@@ -60,6 +60,13 @@ doc.close()
 
 exportPath = Path("fonts/ttf")
 
+def GASP_set(font:TTFont):
+    if "gasp" not in font:
+        font["gasp"] = newTable("gasp")
+        font["gasp"].gaspRange = {}
+    if font["gasp"].gaspRange != {65535: 0x000A}:
+        font["gasp"].gaspRange = {65535: 0x000A}
+
 for file in exportPath.glob("*.ttf"):
     print ("["+str(file).split("/")[2][:-4]+"] adding additional tables and other changes")
     modifiedFont = TTFont(file)
@@ -71,16 +78,6 @@ for file in exportPath.glob("*.ttf"):
     modifiedFont["DSIG"].signatureRecords = []
     modifiedFont["head"].flags |= 1 << 3        #sets flag to always round PPEM to integer
 
+    GASP_set(modifiedFont)
     modifiedFont.save(file)
 
-    print ("["+str(file).split("/")[2][:-4]+"] Autohinting")
-    subprocess.check_call(
-            [
-                "ttfautohint",
-                "--stem-width",
-                "nsn",
-                str(file),
-                str(file)[:-4]+"-hinted.ttf",
-            ]
-        )
-    shutil.move(str(file)[:-4]+"-hinted.ttf", str(file))
